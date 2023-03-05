@@ -3,6 +3,7 @@ import pyttsx3
 import datetime
 import pywhatkit
 import wikipedia
+import cv2
 
 listener = sr.Recognizer()
 pixi = pyttsx3.init()
@@ -41,9 +42,7 @@ def take_command():
 def run_pixi():
     command = take_command()
     if 'time' in command:
-        time = datetime.datetime.now().strftime('%I:%M %p')
-        print(time)
-        talk('The time is '+time)
+        talk('The time is '+time(command))
 
     elif 'play' in command:
         talk('Playing for you' + playing(command))
@@ -55,13 +54,16 @@ def run_pixi():
     elif 'age' in command:
         talk(age(command))
 
-    elif 'are you single' in command:
-        talk('I am single. But I can not produce any child. So, I cant date you sir')
+    elif 'your name' or 'father' or 'daddy' or 'date' or 'thanks' or 'thank you' or 'Allah' or 'God' in command:
+        talk(funfacts(command))
+
+    elif 'camera' or 'webcam' or 'vision' in command:
+        camera(command)
+
+    
 
     else:
         talk('Sorry Sir. I do not understand. Please say it again')
-
-
 
 
 
@@ -77,6 +79,40 @@ def playing(command):
 def age(command):
     boyosh = 'I am 12 hours old right now'
     return boyosh
+
+def time(command):
+     current_time = datetime.datetime.now().strftime('%I:%M %p')
+     return current_time
+
+def camera(command):
+    talk("Opening Camera")
+    cap = cv2.VideoCapture(0)
+    while True:
+        ret, img = cap.read()
+        cv2.imshow('Pixicam', img)
+        k = cv2.waitKey(50)
+        if k == 27:
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+
+def funfacts(command):
+    if 'your name' in command:
+        talk('My name is Pixi The Robot')
+    elif 'father' or 'daddy' or 'sugar daddy'  in command:
+        talk('I do not have any biological father. But technically, My father is Ariifin Rafi')
+    elif 'date' in command:
+        talk('Sorry, I am not interested')
+    elif 'are you there' in command:
+        talk('Yes, At your service boss')
+    elif 'thank you' or 'thanks a lot' in command:
+        talk('You are welcome boss')
+    elif 'Allah' or 'God' or 'Creator' in command:
+        talk('There should be a creator of the universe like I have. So yes, Allah, Vagaban or God exists')
+    elif '' or 'thanks a lot' in command:
+        talk('You are welcome boss')
+    elif '' or 'thanks a lot' in command:
+        talk('You are welcome boss')
 
 
 
